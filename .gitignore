@@ -1,0 +1,25 @@
+### Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+### IDEs and editors
+.idea/
+.vs/
+.vscode/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+### Env files
+.env
+
+### Temp directory
+.temp/
+.tmp/
