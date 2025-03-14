@@ -404,6 +404,18 @@ wheels = [
 ]
 
 [[package]]
+name = "pyaspeller"
+version = "2.0.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/6e/83/a4039c08cb9a57d8b7ad9e119fd87ab73ca6a8c4ea1421095afa70077979/pyaspeller-2.0.2.tar.gz", hash = "sha256:0aed696ab1ca11ca9d1a3874c7c2061fd567be9a2f1eff7b8e772031837701c0", size = 41039 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/73/ab/af7783445d4b564a8c4f6830f4126a219901c14f6b02c03c87a3853f0bb4/pyaspeller-2.0.2-py3-none-any.whl", hash = "sha256:1ae806e7054b0758521dfccadee1aa79747220cb88f21e06f211c59b27fd8e85", size = 16143 },
+]
+
+[[package]]
 name = "pydantic"
 version = "2.10.6"
 source = { registry = "https://pypi.org/simple" }
@@ -797,6 +809,7 @@ dependencies = [
     { name = "numpy" },
     { name = "opencv-python" },
     { name = "pillow" },
+    { name = "pyaspeller" },
     { name = "pydantic" },
     { name = "surya-ocr" },
     { name = "timm" },
@@ -815,6 +828,7 @@ requires-dist = [
     { name = "numpy", specifier = ">=1.26.4" },
     { name = "opencv-python", specifier = ">=4.11.0.86" },
     { name = "pillow", specifier = ">=10.2.0" },
+    { name = "pyaspeller", specifier = ">=2.0.2" },
     { name = "pydantic", specifier = ">=2.6.1" },
     { name = "surya-ocr", specifier = ">=0.13.0" },
     { name = "timm", specifier = ">=1.0.15" },

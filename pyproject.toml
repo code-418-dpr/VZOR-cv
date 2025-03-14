@@ -12,6 +12,7 @@ dependencies = [
     "timm>=1.0.15",
     "surya-ocr>=0.13.0",
     "opencv-python>=4.11.0.86",
+    "pyaspeller>=2.0.2",
 ]
 
 [dependency-groups]
