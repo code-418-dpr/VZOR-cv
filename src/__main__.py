@@ -40,8 +40,8 @@ def main() -> None:
             try:
                 result = service.analyze_image(str(image_path))
                 logger.info("Analysis result:\n%s", json.dumps(result.model_dump(), ensure_ascii=False, indent=2))
-            except Exception as e:  # noqa: BLE001
-                logger.exception("Error processing image %s: %s", image_path, str(e))
+            except Exception:
+                logger.exception("Error processing image %s", image_path)
 
 if __name__ == "__main__":
     main()
