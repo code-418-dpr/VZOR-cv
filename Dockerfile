@@ -18,4 +18,5 @@ COPY --from=deps /app/.venv .venv
 RUN . .venv/bin/activate
 ENTRYPOINT []
 ENV PATH="/app/.venv/bin:$PATH"
+EXPOSE 5000
 CMD ["python", "-m", "src"]

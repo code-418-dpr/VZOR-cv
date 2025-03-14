@@ -13,6 +13,9 @@ dependencies = [
     "surya-ocr>=0.13.0",
     "opencv-python>=4.11.0.86",
     "pyaspeller>=2.0.2",
+    "flask>=3.0.0",
+    "flask-restx>=1.2.0",
+    "werkzeug>=3.0.1",
 ]
 
 [dependency-groups]
