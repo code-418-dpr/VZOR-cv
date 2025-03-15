@@ -7,6 +7,7 @@ from werkzeug.datastructures import FileStorage
 from flask import Flask, request
 from src.logger import get_logger
 from src.services.image_analysis import ImageAnalysisService
+from src.utils import json_to_xml
 
 logger = get_logger(__name__)
 
@@ -50,7 +51,7 @@ upload_parser.add_argument(
 class ImageAnalysis(Resource):
     @ns.expect(upload_parser)
     @api.doc(consumes="multipart/form-data")
-    @ns.produces(["application/json"])
+    @ns.produces(["application/xml"])
     def post(self):
         """Analyze uploaded images."""
         temp_files = []
@@ -113,7 +114,7 @@ class ImageAnalysis(Resource):
                     }, 500
 
             logger.info("Successfully processed all images")
-            return results
+            return json_to_xml(results)
 
         finally:
             for temp_path in temp_files:
