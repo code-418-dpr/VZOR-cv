@@ -16,6 +16,7 @@ dependencies = [
     "flask>=3.0.0",
     "flask-restx>=1.2.0",
     "werkzeug>=3.0.1",
+    "apiflask>=2.3.2",
 ]
 
 [dependency-groups]

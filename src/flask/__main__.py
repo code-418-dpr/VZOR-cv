@@ -1,24 +1,25 @@
 import os
 import tempfile
 
-from flask import Flask, request
 from flask_restx import Api, Resource, fields
 from werkzeug.datastructures import FileStorage
 
+from flask import Flask, request
 from src.logger import get_logger
 from src.services.image_analysis import ImageAnalysisService
 
 logger = get_logger(__name__)
 
 app = Flask(__name__)
-
 app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024
+
 api = Api(
     app,
     version="1.0",
     title="VZOR CV API",
     description="API for image analysis",
     doc="/swagger/",
+    default_mediatype="multipart/form-data",
 )
 
 analysis_result_model = api.model(
@@ -30,6 +31,10 @@ analysis_result_model = api.model(
     },
 )
 
+# Определяем новый namespace для более детальной настройки запросов
+ns = api.namespace("analyze", description="Image analysis operations")
+
+# Настраиваем загрузку файлов для multipart/form-data
 upload_parser = api.parser()
 upload_parser.add_argument(
     "files",
@@ -37,10 +42,15 @@ upload_parser.add_argument(
     type=FileStorage,
     required=True,
     help="Image file(s) to analyze (JPG, JPEG, PNG only)",
-    action="append",
+    action="append",  # Указывает, что можно загружать несколько файлов
 )
 
+
+@ns.route("")
 class ImageAnalysis(Resource):
+    @ns.expect(upload_parser)
+    @api.doc(consumes="multipart/form-data")
+    @ns.produces(["application/json"])
     def post(self):
         """Analyze uploaded images."""
         temp_files = []
@@ -48,9 +58,13 @@ class ImageAnalysis(Resource):
             logger.info("Received file upload request")
             logger.debug("Request headers: %s", dict(request.headers))
 
+            # Проверяем тип содержимого
+            if not request.content_type or "multipart/form-data" not in request.content_type:
+                logger.warning(f"Incorrect content type: {request.content_type}")
+                return {"error": "Content-Type must be multipart/form-data"}, 415
+
             args = upload_parser.parse_args()
             uploaded_files = args.get("files", [])
-
             logger.info("Number of files received: %d", len(uploaded_files) if uploaded_files else 0)
 
             if not uploaded_files:
@@ -63,21 +77,17 @@ class ImageAnalysis(Resource):
                     return {"error": "Invalid file object"}, 400
 
                 logger.info("Processing file: %s", file.filename)
-
                 file_ext = os.path.splitext(file.filename)[1].lower()
                 if file_ext not in [".jpg", ".jpeg", ".png"]:
                     logger.error("Invalid file type: %s", file_ext)
                     return {
                         "error": "Invalid file type",
-                        "message": f"File {file.filename} has unsupported extension. Supported types: JPG, JPEG, PNG"
+                        "message": f"File {file.filename} has unsupported extension. Supported types: JPG, JPEG, PNG",
                     }, 400
 
-                if hasattr(file, 'content_length') and file.content_length > app.config["MAX_CONTENT_LENGTH"]:
+                if hasattr(file, "content_length") and file.content_length > app.config["MAX_CONTENT_LENGTH"]:
                     logger.error("File too large: %s (%d bytes)", file.filename, file.content_length)
-                    return {
-                        "error": "File too large",
-                        "message": f"File {file.filename} exceeds 100MB limit"
-                    }, 413
+                    return {"error": "File too large", "message": f"File {file.filename} exceeds 100MB limit"}, 413
 
             service = ImageAnalysisService()
             results = []
@@ -86,7 +96,6 @@ class ImageAnalysis(Resource):
                 temp = tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(file.filename)[1].lower())
                 temp_path = temp.name
                 temp_files.append(temp_path)
-                
                 try:
                     logger.info("Saving file %s to temporary location: %s", file.filename, temp_path)
                     file.save(temp_path)
@@ -94,17 +103,18 @@ class ImageAnalysis(Resource):
 
                     logger.info("Processing image: %s", file.filename)
                     result = service.analyze_image(temp_path)
-                    results.append(result)
+                    results.append({"objects": result.objects, "description": result.description, "text": result.text})
                     logger.info("Successfully processed image: %s", file.filename)
                 except Exception as e:
                     logger.exception("Error processing image %s: %s", file.filename, str(e))
                     return {
                         "error": "Processing error",
-                        "message": f"Error processing image {file.filename}: {str(e)}"
+                        "message": f"Error processing image {file.filename}: {e!s}",
                     }, 500
 
             logger.info("Successfully processed all images")
             return results
+
         finally:
             for temp_path in temp_files:
                 try:

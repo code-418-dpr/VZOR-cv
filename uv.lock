@@ -1,5 +1,4 @@
 version = 1
-revision = 1
 requires-python = "==3.12.*"
 resolution-markers = [
     "sys_platform == 'darwin'",
@@ -26,19 +25,20 @@ wheels = [
 ]
 
 [[package]]
-name = "apifairy"
-version = "1.4.0"
+name = "apiflask"
+version = "2.3.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "apispec" },
     { name = "flask" },
     { name = "flask-httpauth" },
     { name = "flask-marshmallow" },
+    { name = "marshmallow" },
     { name = "webargs" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/04/9e/10b5a5fe905607a797519706238f4cb9c5a53cdf4b42ecafc25c5600b289/apifairy-1.4.0.tar.gz", hash = "sha256:4b10c2dad8cc1502fcca08c04c121d1dd4a4a0106ed21f026ae524d1fe9bc44e", size = 243257 }
+sdist = { url = "https://files.pythonhosted.org/packages/25/ad/37a600238d0e83e8263bb202ba69cdf8ab61bf126383ca99364ce4712308/apiflask-2.3.2.tar.gz", hash = "sha256:4b18ccdcc335a9ae8cd85701662d92c879339bf439b45fa7c85fca76c9588619", size = 85457 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4c/3d/027cf3bb50712ccf4ea1e040676656e06fd93f0f7f71d4e4b8800ae11d0e/apifairy-1.4.0-py3-none-any.whl", hash = "sha256:be985d2f364e955eb46e8ed3a55db11af49d23a8dd8b3ada2679cd57ca7896cc", size = 11433 },
+    { url = "https://files.pythonhosted.org/packages/74/c0/e8ecd7a9740da506aa0fe0b8aa7bb1370584d7d90dacd38466ce5e8fd1bd/APIFlask-2.3.2-py3-none-any.whl", hash = "sha256:a9c5fe40745c132642ad9ca49a9ffb5dd56b836ca5573d324b7893cea24d01bd", size = 42646 },
 ]
 
 [[package]]
@@ -1019,7 +1019,7 @@ name = "vzor-cv"
 version = "0.0.1"
 source = { virtual = "." }
 dependencies = [
-    { name = "apifairy" },
+    { name = "apiflask" },
     { name = "deep-translator" },
     { name = "flask" },
     { name = "flask-restx" },
@@ -1042,7 +1042,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "apifairy", specifier = ">=1.4.0" },
+    { name = "apiflask", specifier = ">=2.3.2" },
     { name = "deep-translator", specifier = ">=1.11.4" },
     { name = "flask", specifier = ">=3.0.0" },
     { name = "flask-restx", specifier = ">=1.2.0" },
