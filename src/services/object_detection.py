@@ -5,7 +5,7 @@ from transformers import pipeline
 
 class ObjectDetectionService:
     def __init__(self) -> None:
-        self.detector = pipeline("object-detection", model="facebook/detr-resnet-50")
+        self.detector = pipeline("object-detection", model="facebook/detr-resnet-50", use_fast=True)
         self.translator = GoogleTranslator(source="en", target="ru")
 
     def detect_objects(self, image_path: str) -> list[str]:

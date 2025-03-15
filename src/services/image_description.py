@@ -5,7 +5,7 @@ from transformers import pipeline
 
 class ImageDescriptionService:
     def __init__(self) -> None:
-        self.descriptor = pipeline("image-to-text", model="Salesforce/blip-image-captioning-large")
+        self.descriptor = pipeline("image-to-text", model="Salesforce/blip-image-captioning-large", use_fast=True)
         self.translator = GoogleTranslator(source="en", target="ru")
 
     def generate_description(self, image_path: str) -> str:

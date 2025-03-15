@@ -19,4 +19,4 @@ class ImageAnalysisService:
             objects=objects,
             text=text,
             description=description,
-        ) 
+        )
