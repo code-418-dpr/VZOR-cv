@@ -4,7 +4,7 @@ import tempfile
 from flask_restx import Api, Resource, fields
 from werkzeug.datastructures import FileStorage
 
-from flask import Flask, request
+from flask import Flask, render_template, request
 from src.logger import get_logger
 from src.services.image_analysis import ImageAnalysisService
 from src.utils import json_to_xml
@@ -13,6 +13,12 @@ logger = get_logger(__name__)
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024
+
+
+@app.route("/")
+def index() -> None:
+    return render_template("index.html")
+
 
 api = Api(
     app,
@@ -124,6 +130,7 @@ class ImageAnalysis(Resource):
                         logger.debug("Cleaned up temporary file: %s", temp_path)
                 except Exception as e:
                     logger.warning("Failed to clean up temporary file %s: %s", temp_path, str(e))
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
