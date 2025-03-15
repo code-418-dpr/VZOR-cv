@@ -57,13 +57,19 @@ upload_parser.add_argument(
 class ImageAnalysis(Resource):
     @ns.expect(upload_parser)
     @api.doc(consumes="multipart/form-data")
-    @ns.produces(["application/xml"])
+    @ns.produces(["application/xml", "application/json"])  # Add JSON as a supported media type
     def post(self):
         """Analyze uploaded images."""
         temp_files = []
         try:
             logger.info("Received file upload request")
             logger.debug("Request headers: %s", dict(request.headers))
+
+            # Check for the 'format' query parameter
+            output_format = request.args.get("format", "xml").lower()  # Default to 'xml' if not provided
+            if output_format not in ["xml", "json"]:
+                logger.warning(f"Invalid format requested: {output_format}")
+                return {"error": "Invalid format", "message": "Supported formats are 'xml' and 'json'"}, 400
 
             # Проверяем тип содержимого
             if not request.content_type or "multipart/form-data" not in request.content_type:
@@ -120,7 +126,12 @@ class ImageAnalysis(Resource):
                     }, 500
 
             logger.info("Successfully processed all images")
-            return json_to_xml(results)
+
+            # Return response based on the requested format
+            if output_format == "json":
+                return results, 200  # Return JSON response
+            else:
+                return json_to_xml(results)  # Default to XML response
 
         finally:
             for temp_path in temp_files:
