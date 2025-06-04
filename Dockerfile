@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 FROM python:${PYTHON_VERSION}-slim-bookworm AS prod
 WORKDIR /app
 COPY src src
-COPY models models
+COPY *models .
 COPY *.env .
 COPY --from=deps /app/.venv .venv
 
