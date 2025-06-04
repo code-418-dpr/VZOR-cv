@@ -15,6 +15,7 @@
 
 -   **Python** — язык программирования
 -   **uv** — самый быстрый пакетный менеджер для Python
+-   **gRPC** — фреймворк для связи сервиса с [основным бэкендом](https://github.com/code-418-dpr/VZOR-backend)
 -   **Blip-Image-Captioning** — модель для описания изображений
 -   **YOLO** — модель для классификации изображений
 -   **EasyOCR** — модель для распознавания текста на изображениях
@@ -38,7 +39,7 @@ docker build -t vzor-cv .
 4. Теперь запускать образ можно командой:
 
 ```shell
-docker run -d -p 5000:5000 --name vzor-cv-standalone vzor-cv
+docker run -d -p 50051:50051 --name vzor-cv-standalone vzor-cv
 ```
 
 ### Без использования Docker
@@ -61,6 +62,12 @@ uv sync --frozen --no-dev
 
 ```shell
 uv run -m src
+```
+
+Чтобы протестировать работу сервиса, параллельно с запуском gRPC-сервера можно запустить тестовый клиент:
+
+```shell
+uv run -m src.grpc.test_client
 ```
 
 ## Модификация
