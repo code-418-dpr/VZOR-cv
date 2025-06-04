@@ -3,10 +3,9 @@
 import grpc
 import warnings
 
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
-import image_pb2 as image__pb2
+from src.grpc import image_pb2 as src_dot_grpc_dot_image__pb2
 
-GRPC_GENERATED_VERSION = '1.71.0'
+GRPC_GENERATED_VERSION = '1.72.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -19,7 +18,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in image_pb2_grpc.py depends on'
+        + f' but the generated code in src/grpc/image_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -37,13 +36,8 @@ class ImageServiceStub(object):
         """
         self.UploadImage = channel.unary_unary(
                 '/imageGrpc.ImageService/UploadImage',
-                request_serializer=image__pb2.UploadImageRequest.SerializeToString,
-                response_deserializer=image__pb2.UploadImageResponse.FromString,
-                _registered_method=True)
-        self.ReturnImageData = channel.unary_unary(
-                '/imageGrpc.ImageService/ReturnImageData',
-                request_serializer=image__pb2.ReturnImageDataRequest.SerializeToString,
-                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                request_serializer=src_dot_grpc_dot_image__pb2.UploadImageRequest.SerializeToString,
+                response_deserializer=src_dot_grpc_dot_image__pb2.UploadImageResponse.FromString,
                 _registered_method=True)
 
 
@@ -56,24 +50,13 @@ class ImageServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ReturnImageData(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_ImageServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'UploadImage': grpc.unary_unary_rpc_method_handler(
                     servicer.UploadImage,
-                    request_deserializer=image__pb2.UploadImageRequest.FromString,
-                    response_serializer=image__pb2.UploadImageResponse.SerializeToString,
-            ),
-            'ReturnImageData': grpc.unary_unary_rpc_method_handler(
-                    servicer.ReturnImageData,
-                    request_deserializer=image__pb2.ReturnImageDataRequest.FromString,
-                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                    request_deserializer=src_dot_grpc_dot_image__pb2.UploadImageRequest.FromString,
+                    response_serializer=src_dot_grpc_dot_image__pb2.UploadImageResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -101,35 +84,8 @@ class ImageService(object):
             request,
             target,
             '/imageGrpc.ImageService/UploadImage',
-            image__pb2.UploadImageRequest.SerializeToString,
-            image__pb2.UploadImageResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def ReturnImageData(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/imageGrpc.ImageService/ReturnImageData',
-            image__pb2.ReturnImageDataRequest.SerializeToString,
-            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            src_dot_grpc_dot_image__pb2.UploadImageRequest.SerializeToString,
+            src_dot_grpc_dot_image__pb2.UploadImageResponse.FromString,
             options,
             channel_credentials,
             insecure,

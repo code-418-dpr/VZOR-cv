@@ -23,3 +23,7 @@ wheels/
 ### Temp directory
 .temp/
 .tmp/
+
+### Misc
+images
+models

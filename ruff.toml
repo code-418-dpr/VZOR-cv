@@ -1,4 +1,5 @@
-target-version = "py313"
+exclude = ["grpc"]
+
 line-length = 120
 indent-width = 4
 

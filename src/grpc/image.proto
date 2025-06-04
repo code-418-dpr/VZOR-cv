@@ -1,27 +1,27 @@
-syntax = "proto3";
+﻿syntax = "proto3";
 
 package imageGrpc;
 
-import "google/protobuf/empty.proto";
-
 service ImageService {
   rpc UploadImage (UploadImageRequest) returns (UploadImageResponse);
-  rpc ReturnImageData (ReturnImageDataRequest) returns (google.protobuf.Empty);
 }
 
 message UploadImageRequest {
-  string image_id = 1;
-  bytes image_data = 2;
+  repeated ImageToProcess images = 1;
 }
 
 message UploadImageResponse {
-  bool success = 1;
-  string message = 2;
+  repeated ProcessedImage images = 1;
 }
 
-message ReturnImageDataRequest {
+message ImageToProcess {
+  string id = 1;
+  string url = 2;
+}
+
+message ProcessedImage {
   string id = 1;
   string description = 2;
-  repeated string objects = 3;
-  string text = 4;
+  repeated string tags = 3;
+  string recognized_text = 4;
 }

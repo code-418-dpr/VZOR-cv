@@ -12,11 +12,12 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 FROM python:${PYTHON_VERSION}-slim-bookworm AS prod
 WORKDIR /app
 COPY src src
+COPY models models
 COPY *.env .
 COPY --from=deps /app/.venv .venv
 
 RUN . .venv/bin/activate
 ENTRYPOINT []
 ENV PATH="/app/.venv/bin:$PATH"
-EXPOSE 5000
+EXPOSE 50051
 CMD ["python", "-m", "src"]
