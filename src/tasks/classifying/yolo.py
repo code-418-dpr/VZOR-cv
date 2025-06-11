@@ -5,7 +5,10 @@ import ultralytics
 from PIL import Image, ImageFile
 
 from src import conf
+from src.logger import get_logger
 from src.tasks._model import Model
+
+logger = get_logger(__name__)
 
 
 class YOLO(Model):
@@ -48,10 +51,13 @@ class YOLO(Model):
 
     @classmethod
     def scan_images(cls, images: typing.Iterable[bytes]) -> list[set[str]]:
+        logger.info("Scanning images (detection)")
         images = tuple(cls._preprocess_bytes(image_bytes) for image_bytes in images)
         detection_results = cls._scan_images_detection(images)
+        logger.info("Scanning images (classifying)")
         classifying_results = cls._scan_images_classifying(images)
         results = []
         for detection_result, classifying_result in zip(detection_results, classifying_results, strict=True):
             results.append(detection_result | classifying_result)
+        logger.info("Processing finished")
         return results
